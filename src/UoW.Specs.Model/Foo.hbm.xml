@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping default-access="field.camelcase-underscore" default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+
+	<class name="UoW.Specs.Model.Foo, UoW.Specs.Model" table="Foos">
+
+		<id name="Id" type="integer">
+			<generator class="native" />
+		</id>
+
+		<property name="Bar" />
+	</class>
+
+</hibernate-mapping>
