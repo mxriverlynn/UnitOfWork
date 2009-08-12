@@ -237,9 +237,8 @@ namespace UoW.Specs
 			{
 				mockUoW = new MockUnitOfWork();
 				mockUoWFactory = new MockUoWFactory(mockUoW);
-				IRepositoryFactory repositoryFactory = new DepConRepositoryFactory();
 				IUnitOfWorkStorage uowStorage = new ThreadStaticUnitOfWorkStorage();
-				UnitOfWork.Configure(new UnitOfWorkConfigurationBase(mockUoWFactory, repositoryFactory, uowStorage));
+				UnitOfWork.Configure(new UnitOfWorkConfigurationBase(mockUoWFactory, uowStorage));
 				
 				UnitOfWork.Start(() =>
 				{

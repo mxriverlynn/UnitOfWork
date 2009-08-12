@@ -1,8 +1,6 @@
-﻿using MAT.DependencyInjection;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SpecUnit;
 using UoW.NHibernate;
-using UoW.Specs.Mocks;
 using UoW.Specs.Model;
 
 namespace UoW.Specs.NHibernate
@@ -21,13 +19,12 @@ namespace UoW.Specs.NHibernate
 			base.Context();
 
 			foo = new MockFooRepo();
-			DepCon.RegisterInstance<IFooRepository>(foo);
 
 			UnitOfWork.Start(() =>
 			{
 				Transaction.Begin();
 				NHibernateConfig.GenerateSchema();
-				Repository<IFooRepository>.Do.Something();
+				foo.Something();
 				Transaction.Commit();
 			});
 		}
@@ -67,7 +64,6 @@ namespace UoW.Specs.NHibernate
 			try
 			{
                 UnitOfWork.Configure(_config);
-				DepCon.RegisterType<IUnitOfWork, MockUnitOfWork>();	
 				fooRepo = new MockFooRepo();
 				fooRepo.Something();
 			}

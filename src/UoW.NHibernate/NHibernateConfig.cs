@@ -14,14 +14,14 @@ namespace UoW.NHibernate
 	public class NHibernateConfig : UnitOfWorkConfigurationBase
 	{
 
-		private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
 		private static Configuration _config;
 		private static ISessionFactory _sessionFactory;
 
 		#region Constructors
 
-		public NHibernateConfig(IRepositoryFactory repositoryFactory, IUnitOfWorkStorage storage) : base(new NHibernateUoWFactory(), repositoryFactory, storage)
+		public NHibernateConfig(IUnitOfWorkStorage storage) : base(new NHibernateUoWFactory(), storage)
 	    {
 			if (log.IsInfoEnabled) log.Info(Consts.ENTERED);
 			
@@ -31,7 +31,7 @@ namespace UoW.NHibernate
 	        ConfigureUnitOfWork();
 	    }
 
-	    public NHibernateConfig(string configFile, IRepositoryFactory repositoryFactory, IUnitOfWorkStorage storage) : base(new NHibernateUoWFactory(), repositoryFactory, storage)
+	    public NHibernateConfig(string configFile, IUnitOfWorkStorage storage) : base(new NHibernateUoWFactory(), storage)
 	    {
 			if (log.IsInfoEnabled) log.Info(Consts.ENTERED);
 			if (log.IsDebugEnabled) log.Debug(configFile);
@@ -42,7 +42,7 @@ namespace UoW.NHibernate
 	        ConfigureUnitOfWork();
 	    }
 
-		public NHibernateConfig(Stream configData, IRepositoryFactory repositoryFactory, IUnitOfWorkStorage storage) : base(new NHibernateUoWFactory(), repositoryFactory, storage)
+		public NHibernateConfig(Stream configData, IUnitOfWorkStorage storage) : base(new NHibernateUoWFactory(), storage)
 	    {
 			if (log.IsInfoEnabled) log.Info(Consts.ENTERED);
 			if (log.IsDebugEnabled) log.Debug(configData);
@@ -57,7 +57,7 @@ namespace UoW.NHibernate
 	        reader.Close();
 	    }
 
-	    public NHibernateConfig(IDictionary<string, string> properties, IRepositoryFactory repositoryFactory, IUnitOfWorkStorage storage, params Assembly[] assemblies) : base(new NHibernateUoWFactory(), repositoryFactory, storage)
+	    public NHibernateConfig(IDictionary<string, string> properties,  IUnitOfWorkStorage storage, params Assembly[] assemblies) : base(new NHibernateUoWFactory(), storage)
 	    {
 	        _config = new Configuration { Properties = properties };
 
@@ -71,7 +71,7 @@ namespace UoW.NHibernate
 	        ConfigureUnitOfWork();
 	    }
 
-		public NHibernateConfig(Func<Configuration> configurationAction, IRepositoryFactory repositoryFactory, IUnitOfWorkStorage storage) : base(new NHibernateUoWFactory(), repositoryFactory, storage)
+		public NHibernateConfig(Func<Configuration> configurationAction, IUnitOfWorkStorage storage) : base(new NHibernateUoWFactory(), storage)
 		{
 			_config = configurationAction();
 			ConfigureUnitOfWork();

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using MAT.DependencyInjection;
 using NUnit.Framework;
 using SpecUnit;
 using UoW.NHibernate;
@@ -19,7 +18,7 @@ namespace UoW.Specs.NHibernate
 		{
 			base.Context();
 
-			NHibernateConfig config = new NHibernateConfig(_repositoryFactory, _uowStorage);
+			NHibernateConfig config = new NHibernateConfig(_uowStorage);
             UnitOfWork.Configure(config);
 			UnitOfWork.Start(() =>
 			{
@@ -51,9 +50,7 @@ namespace UoW.Specs.NHibernate
 		{
 			base.Context();
 
-			DepCon.ClearRegistrations();
 			fooRepo = new MockFooRepo();
-			DepCon.RegisterInstance<IFooRepository>(fooRepo);
 
 			IDictionary<string, string> properties = new Dictionary<string, string>
 			{
@@ -67,12 +64,12 @@ namespace UoW.Specs.NHibernate
 			    {"connection.release_mode", "on_close"}
 			};
 
-            NHibernateConfig config = new NHibernateConfig(properties, _repositoryFactory, _uowStorage, typeof(Foo).Assembly );
+            NHibernateConfig config = new NHibernateConfig(properties, _uowStorage, typeof(Foo).Assembly );
 			UnitOfWork.Configure(config);
 			UnitOfWork.Start(() =>
 			{
 				Transaction.Begin();
-				Repository<IFooRepository>.Do.Something();
+				fooRepo.Something();
 				Transaction.Rollback();
 			});
 			UnitOfWork.Start(() =>

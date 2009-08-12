@@ -12,15 +12,6 @@ namespace UoW
 
 		private static IUnitOfWorkConfiguration Configuration { get; set; }
 
-		internal static IRepositoryFactory RepositoryFactory
-		{
-			get
-			{
-				CheckForUoWConfiguration();
-				return Configuration.RepositoryFactory;
-			}
-		}
-
 		internal static IUnitOfWorkStorage UnitOfWorkStorage
 		{
 			get

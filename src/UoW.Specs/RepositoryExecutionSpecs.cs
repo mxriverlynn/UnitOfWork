@@ -1,8 +1,5 @@
-﻿using MAT.DependencyInjection;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SpecUnit;
-using UoW;
-using UoW.Specs.Mocks;
 
 namespace UoW.Specs
 {
@@ -35,10 +32,8 @@ namespace UoW.Specs
 		protected override void Context()
 		{
 			fooRepo = new MockFooRepo();
-			DepCon.RegisterInstance(fooRepo);			
-
 			UnitOfWork.Start(() => 
-				Repository<IFooRepo>.Do.Something()
+				fooRepo.Something()
 			);
 		}
 
