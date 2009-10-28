@@ -9,6 +9,8 @@ namespace UoW
 
 		private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+		#region Variables and properties
+
 		private IUnitOfWorkFactory _unitOfWorkFactory;
 		public IUnitOfWorkFactory UnitOfWorkFactory
 		{
@@ -37,12 +39,29 @@ namespace UoW
 			}
 		}
 
-		public UnitOfWorkConfigurationBase(IUnitOfWorkFactory uowFactory, IUnitOfWorkStorage storage)
+		private IRepositoryFactory _repositoryFactory;
+		public IRepositoryFactory RepositoryFactory
+		{
+			get { return _repositoryFactory; }
+			private set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException("value", "This property cannot be set to null");
+				}
+				_repositoryFactory = value;
+			}
+		}
+
+		#endregion
+
+		public UnitOfWorkConfigurationBase(IUnitOfWorkFactory uowFactory, IRepositoryFactory repositoryFactory, IUnitOfWorkStorage storage)
 		{
 			if (log.IsInfoEnabled) log.Info(Consts.ENTERED);
-			if (log.IsDebugEnabled) log.Debug(new object[] { uowFactory, storage } );
+			if (log.IsDebugEnabled) log.Debug(new object[] { uowFactory, repositoryFactory, storage } );
 
 			UnitOfWorkFactory = uowFactory;
+			RepositoryFactory = repositoryFactory;
 			UnitOfWorkStorage = storage;
 
 			if (log.IsDebugEnabled) log.Debug("Done creating UoWConfiguration");

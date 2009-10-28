@@ -1,7 +1,6 @@
 obj
 bin
-deploy
-deploy/*
+build
 _ReSharper.*
 *.csproj.user
 *.resharper.user

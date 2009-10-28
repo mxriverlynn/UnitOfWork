@@ -35,7 +35,7 @@ namespace UoW.Specs.NHibernate
 												.SetProperties(properties);
 											cfg.AddMappingsFromAssembly(typeof(WidgetMap).Assembly);
 				                       		return cfg;
-				                       	}, _uowStorage);
+				                       	}, _repositoryFactory, _uowStorage);
 				
 			UnitOfWork.Configure(config);
 			UnitOfWork.Start(() =>

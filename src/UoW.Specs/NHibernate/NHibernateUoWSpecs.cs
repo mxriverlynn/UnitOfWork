@@ -1,11 +1,12 @@
 ﻿using NUnit.Framework;
 using SpecUnit;
+using StructureMap;
 using UoW.NHibernate;
 using UoW.Specs.Model;
 
 namespace UoW.Specs.NHibernate
 {
-	internal class MockFooRepo : NHibernateRepository, IFooRepository
+	public class MockFooRepo : NHibernateRepository, IFooRepository
 	{
 		public void Something()
 		{
@@ -18,20 +19,22 @@ namespace UoW.Specs.NHibernate
 	[Concern("NHibernateUoW")]
 	public class When_shutting_down_NHibernateUoW : With_Valid_NHibernateConfig
 	{
-
-		private MockFooRepo foo;
-
+		protected Container container;
 		protected override void Context()
 		{
 			base.Context();
-
-			foo = new MockFooRepo();
 
 			UnitOfWork.Start(() =>
 			{
 				Transaction.Begin();
 				NHibernateConfig.GenerateSchema();
-				foo.Something();
+
+				ObjectFactory.Initialize(
+				factory => factory
+				    .ForRequestedType<IFooRepository>()
+				    .TheDefaultIsConcreteType<MockFooRepo>());
+
+				Repository<IFooRepository>.Do.Something();
 
 				Assert.IsTrue(_uowStorage.HasTransactionManager);
 

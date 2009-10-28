@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using SpecUnit;
+using StructureMap;
 using UoW.NHibernate;
 using UoW.Specs.Model;
 
@@ -18,7 +19,7 @@ namespace UoW.Specs.NHibernate
 		{
 			base.Context();
 
-			NHibernateConfig config = new NHibernateConfig(_uowStorage);
+			NHibernateConfig config = new NHibernateConfig(_repositoryFactory, _uowStorage);
             UnitOfWork.Configure(config);
 			UnitOfWork.Start(() =>
 			{
@@ -50,7 +51,12 @@ namespace UoW.Specs.NHibernate
 		{
 			base.Context();
 
+			//DepCon.ClearRegistrations();
 			fooRepo = new MockFooRepo();
+			//DepCon.RegisterInstance<IFooRepository>(fooRepo);
+			ObjectFactory.Initialize(
+				factory => factory
+					.ForRequestedType<IFooRepository>().TheDefault.IsThis(fooRepo));
 
 			IDictionary<string, string> properties = new Dictionary<string, string>
 			{
@@ -61,15 +67,16 @@ namespace UoW.Specs.NHibernate
 			        "connection.connection_string",
 			        @"Data Source=..\..\..\Database\FooDb.s3db"
 			        },
-			    {"connection.release_mode", "on_close"}
+			    {"connection.release_mode", "on_close"},
+				{"proxyfactory.factory_class", "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle"}
 			};
 
-            NHibernateConfig config = new NHibernateConfig(properties, _uowStorage, typeof(Foo).Assembly );
+            NHibernateConfig config = new NHibernateConfig(properties, _repositoryFactory, _uowStorage, typeof(Foo).Assembly );
 			UnitOfWork.Configure(config);
 			UnitOfWork.Start(() =>
 			{
 				Transaction.Begin();
-				fooRepo.Something();
+				Repository<IFooRepository>.Do.Something();
 				Transaction.Rollback();
 			});
 			UnitOfWork.Start(() =>

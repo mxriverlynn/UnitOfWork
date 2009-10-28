@@ -18,7 +18,7 @@ namespace UoW.Specs.NHibernate
 		{
 			base.Context();
 
-		    NHibernateConfig config = new NHibernateConfig(@".\hibernate.cfg.xml", _uowStorage);
+		    NHibernateConfig config = new NHibernateConfig(@".\hibernate.cfg.xml", _repositoryFactory, _uowStorage);
 		    UnitOfWork.Configure(config);
             UnitOfWork.Start(() =>
             {
@@ -54,10 +54,11 @@ namespace UoW.Specs.NHibernate
          			"connection.connection_string",
          			@"Data Source=:memory:;Version=3;New=True;"
          			},
-         		{"connection.release_mode", "on_close"}
+         		{"connection.release_mode", "on_close"},
+				{"proxyfactory.factory_class","NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle"}
          	};
 
-			NHibernateConfig config = new NHibernateConfig(properties, _uowStorage, typeof(Foo).Assembly );
+			NHibernateConfig config = new NHibernateConfig(properties, _repositoryFactory, _uowStorage, typeof(Foo).Assembly );
             UnitOfWork.Configure(config);
 			UnitOfWork.Start(() =>
 			{
@@ -85,7 +86,7 @@ namespace UoW.Specs.NHibernate
 			base.Context();
 
 			FileStream fs = new FileStream(@".\hibernate.cfg.xml", FileMode.Open, FileAccess.Read);
-			NHibernateConfig config = new NHibernateConfig(fs, _uowStorage);
+			NHibernateConfig config = new NHibernateConfig(fs, _repositoryFactory, _uowStorage);
 		    UnitOfWork.Configure(config);
 			fs.Dispose();
 

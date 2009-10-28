@@ -10,8 +10,8 @@ namespace UoW.Specs.MappingAssembly
 		{
 			Id(w => w.Id);
 			Map(w => w.SomeValue);
-			WithTable("MyTable");
-			HasManyToMany<Foo>(x => x.Id).AsSet().WithTableName("Foo_User");
+			Table("MyTable");
+			HasManyToMany<Foo>(x => x.Id).AsSet().Table("Foo_User");
 		}
 	
 	}

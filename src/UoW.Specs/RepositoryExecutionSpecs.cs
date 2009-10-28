@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using SpecUnit;
+using StructureMap;
 
 namespace UoW.Specs
 {
@@ -11,15 +12,11 @@ namespace UoW.Specs
 	public class When_executing_a_repository_method : RepositoryExecutionContext
 	{
 
-		private class MockFooRepo : IFooRepo
+		public class MockFooRepo : IFooRepo
 		{
-			#region IFooRepo Members
-
 			public void Something()
 			{
 			}
-
-			#endregion
 		}
 
 		private interface IFooRepo
@@ -32,8 +29,14 @@ namespace UoW.Specs
 		protected override void Context()
 		{
 			fooRepo = new MockFooRepo();
+
+			ObjectFactory.Initialize(
+				factory => factory
+					.ForRequestedType<IFooRepo>()
+					.TheDefaultIsConcreteType<MockFooRepo>());			
+
 			UnitOfWork.Start(() => 
-				fooRepo.Something()
+				Repository<IFooRepo>.Do.Something()
 			);
 		}
 

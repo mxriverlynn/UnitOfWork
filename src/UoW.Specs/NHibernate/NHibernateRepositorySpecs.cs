@@ -1,12 +1,11 @@
 ﻿using NUnit.Framework;
 using SpecUnit;
+using StructureMap;
 using UoW.NHibernate;
 using UoW.Specs.Model;
 
 namespace UoW.Specs.NHibernate
 {
-
-
 	[TestFixture]
 	[Concern("NHibernateRepository")]
 	public class When_executing_an_nhibernate_repository_method : With_Valid_NHibernateConfig
@@ -20,11 +19,15 @@ namespace UoW.Specs.NHibernate
 
 			foo = new MockFooRepo();
 
+			ObjectFactory.Initialize(
+				factory => factory
+					.ForRequestedType<IFooRepository>().TheDefault.IsThis(foo));
+
 			UnitOfWork.Start(() =>
 			{
 				Transaction.Begin();
 				NHibernateConfig.GenerateSchema();
-				foo.Something();
+				Repository<IFooRepository>.Do.Something();
 				Transaction.Commit();
 			});
 		}
@@ -64,6 +67,7 @@ namespace UoW.Specs.NHibernate
 			try
 			{
                 UnitOfWork.Configure(_config);
+				//DepCon.RegisterType<IUnitOfWork, MockUnitOfWork>();	
 				fooRepo = new MockFooRepo();
 				fooRepo.Something();
 			}
