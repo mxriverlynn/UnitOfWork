@@ -47,6 +47,6 @@ Albacore::NCoverReportTask.new(:coveragereport => :coverageanalysis) do |ncr|
 	
 	ncr.required_coverage << NCover::BranchCoverage.new(:minimum => 10)
 	ncr.required_coverage << NCover::SymbolCoverage.new(:minimum => 50)
-	ncr.required_coverage << NCover::MethodCoverage.new(:minimum => 50)
+	ncr.required_coverage << NCover::MethodCoverage.new(:minimum => 10)
 	ncr.required_coverage << NCover::CyclomaticComplexity.new(:maximum => 100)
 end
