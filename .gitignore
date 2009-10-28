@@ -1,6 +1,5 @@
 obj
 bin
-build
 _ReSharper.*
 *.csproj.user
 *.resharper.user
@@ -9,3 +8,5 @@ _ReSharper.*
 *.cache
 ~$*
 *.tmp
+build
+codecoverage
