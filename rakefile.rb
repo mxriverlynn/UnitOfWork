@@ -30,7 +30,7 @@ Albacore::NCoverConsoleTask.new(:coverageanalysis => :build) do |ncc|
 	
 	nunit = NUnitTestRunner.new("tools/NUnit-v2.5/nunit-console.exe")
 	nunit.log_level = :verbose
-	nunit.assemblies << "assemblies/TestSolution.Tests.dll"
+	nunit.assemblies << "UoW.Specs.dll"
 	nunit.options << '/noshadow'
 	
 	ncc.testrunner = nunit
@@ -45,7 +45,7 @@ Albacore::NCoverReportTask.new(:coveragereport => :coverageanalysis) do |ncr|
 	fullcoveragereport.output_path = @@coverage_report
 	ncr.reports << fullcoveragereport
 	
-	ncr.required_coverage << NCover::BranchCoverage.new(:minimum => 50)
+	ncr.required_coverage << NCover::BranchCoverage.new(:minimum => 10)
 	ncr.required_coverage << NCover::SymbolCoverage.new(:minimum => 50)
 	ncr.required_coverage << NCover::MethodCoverage.new(:minimum => 50)
 	ncr.required_coverage << NCover::CyclomaticComplexity.new(:maximum => 100)

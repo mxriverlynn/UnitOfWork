@@ -65,7 +65,7 @@ namespace UoW.Specs.NHibernate
 			    {"connection.provider", "NHibernate.Connection.DriverConnectionProvider"},
 			    {
 			        "connection.connection_string",
-			        @"Data Source=..\..\..\Database\FooDb.s3db"
+			        @"Data Source=FooDb.s3db"
 			        },
 			    {"connection.release_mode", "on_close"},
 				{"proxyfactory.factory_class", "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle"}
