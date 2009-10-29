@@ -45,11 +45,11 @@ Albacore::NCoverReportTask.new(:coveragereport => :coverageanalysis) do |ncr|
 	fullcoveragereport.output_path = @@coverage_report
 	ncr.reports << fullcoveragereport
 	
-	ncr.required_coverage << NCover::BranchCoverage.new(:minimum => 10)
-	ncr.required_coverage << NCover::SymbolCoverage.new(:minimum => 50)
-	ncr.required_coverage << NCover::MethodCoverage.new(:minimum => 10)
-	ncr.required_coverage << NCover::CyclomaticComplexity.new(:maximum => 200, :item_type => :Class)
+	ncr.required_coverage << NCover::BranchCoverage.new(:minimum => 75)
+	ncr.required_coverage << NCover::SymbolCoverage.new(:minimum => 80)
+	ncr.required_coverage << NCover::MethodCoverage.new(:minimum => 80)
+	ncr.required_coverage << NCover::CyclomaticComplexity.new(:maximum => 20, :item_type => :Class)
 	
-	ncr.filters << NCover::AssemblyFilter.new(:filter_type => :include, :filter => "UoW.*")
-	ncr.filters << NCover::AssemblyFilter.new(:filter_type => :exclude, :filter => "UoW.Specs.*")
+	ncr.filters << NCover::AssemblyFilter.new(:filter_type => :include, :filter => "UoW*")
+	ncr.filters << NCover::AssemblyFilter.new(:filter_type => :exclude, :filter => "UoW.Specs*")
 end
